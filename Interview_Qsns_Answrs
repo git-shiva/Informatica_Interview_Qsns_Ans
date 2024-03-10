@@ -1,0 +1,150 @@
+How do you pull records on a daily basis into your ETL Server?
+Answer: Running incremental/delta/cdc.. For this, we have so many logics, some of them are:
+1) Using mapping level variable
+2) Using control table and ...
+
+If my source has 15 tables and the target is one, how do I join tables?
+Answer: If your source is a flat file and has the same structure, you can go for indirect file type. If the source is a relational file, then you can use Source Qualifier - SQL override or join condition, or Joiner Transformation (n-1).
+
+If a flat file has 100,000 records and I want to convert it to an Excel file, what happens? (Because an Excel sheet has 65,536 columns, but flat files have one lakh columns.) How do I get one lakh columns in an Excel sheet?
+Answer: If you want to convert a flat file to an Excel format, convert it into an Excel format and save it as .CSV (comma-separated value) format. It has a capacity of 10 lakhs records.
+
+How can I schedule a workflow to run every day, three times, with a 3-hour gap between each run?
+Answer: In the Scheduler, there is an option called Customized Report. By selecting the Days(s) option in the "Repeat every" field, you can see Daily Frequency options. Choose the "Run Every" option for the particular hours (the gap between every run of the workflow). After that, select the "End after (3 runs)" option in the main Scheduler tab under the "End Options."
+
+What is a Mapplet, and what is its logic?
+Answer: A Mapplet is a reusable object in Informatica PowerCenter that represents a set of transformations and allows you to reuse the transformation logic across multiple mappings. We can create any number of Mapplets for one mapping, and there is no limit to the number of Mapplets. Each Mapplet can have one or more logics, and there is no limit to the number of logics within a Mapplet.
+
+When developing a project, what performance issues may arise?
+Answer: In an Informatica project, common performance issues include tuning the mapping, minimizing the use of active transformations, choosing the best loading options, partitioning the data, and using index-less target tables.
+
+Why does a table with both INDEX and CONSTRAINTs potentially raise performance issues, and why might it perform better when dropping the index and disabling the constraint?
+Answer: Dropping the index and disabling the constraint can improve performance because it reduces the overhead of maintaining these structures during data loading. Loading data without these constraints and indexes initially allows for faster data insertion. After loading, you can configure the indexes and constraints on the table.
+
+What are some frequently used Unix commands in Informatica?
+Answer: Common Unix commands in Informatica include SED commands, AWK commands, DIR commands, and file and copy commands.
+
+How can you identify whether a parameter in a parameter file is a workflow parameter or a mapping parameter?
+Answer: Mapping parameters start with $$, while workflow parameters start with $.
+
+What is the query to find the nth highest salary?
+Answer: There are three ways to find the nth highest salary in a table. Here are examples of two of them:
+1) `select distinct sal from emp e1 where &n=(select count distinct sal from emp e2 where e1.sal <=e2.sal);`
+2) `select empno, ename, sal, deptno, rank() over (order by sal desc) as ra from emp where ra=&n;`
+
+What is a Cursor, and why use it?
+Answer: In Oracle, when a query returns more than one row, a result set is produced and stored in memory. Cursors allow the programmer to access this result set and process the data in different ways for each row. Cursors are handy when dealing with queries that return multiple rows. There are different types of cursors, and Oracle PL/SQL declares a cursor implicitly for all queries and DML statements. Cursors are particularly useful when dealing with queries that return multiple rows.
+
+What are the types of indexes generally used in Informatica?
+Answer: In Informatica, B-tree and bitmap indexes are commonly used. B-tree indexes are suitable for low cardinality, while bitmap indexes are used for high cardinality, providing better performance.
+
+Why do we select the table with the minimum number of records as the Master table in a joiner?
+Answer: The Integration Service (IS) reads data from the master table and builds data cache and data index for cache building. After that, it reads data from the detail table to perform joins. Because the master table typically has very few records compared to the detail table, this approach results in less runtime, ultimately saving time and increasing performance.
+
+What is the difference between a joiner and lookup transformation, and what basic things can be done with both if you are not a performance expert?
+Answer: Joiner and lookup transformations are used for combining data from different sources. Joiner operates on sources, while lookup operates on both source and target. Some basic functions include matching and merging data. However, limitations arise when working with heterogeneous sources. Joiner doesn't support nonequi joins, whereas lookup supports nonequi joins. Joiner doesn't match for null values, but lookup does. Joiner supports only equality operator in join conditions, while lookup supports <=, >=, =, != in the lookup condition.
+
+How can you display only hidden files in UNIX?
+Answer: You can use the following command: `ls -a | grep "^\."`
+
+Tell me one complex query in Oracle.
+Answer: Here is an example of a complex query in Oracle:
+
+```sql
+SELECT users.user_id, users.email, MAX(classified_ads.posted)
+FROM users, classified_ads
+WHERE users.user_id = classified_ads.user_id
+GROUP BY users.user_id, users.email
+ORDER BY UPPER(users.email);
+```
+
+Is the mapping valid or invalid if data is passed from one active transformation and one passive transformation into a passive transformation?
+Answer: The mapping is invalid. Connecting the output of a passive transformation to another passive transformation is not allowed in Informatica. Passive transformations can only receive data from an active transformation.
+
+Can you connect the output of a joiner to an expression transformation where the output of the joiner is from different pipelines?
+Answer: Yes, you can connect the output of a joiner to an expression transformation, even if the output comes from different pipelines. The joiner transformation combines data from different sources based on a specified condition, and the expression transformation can then operate on the combined data set.
+
+If you have one source with 52 million records, and you want to load only 7 records into the target, how would you achieve this?
+Answer: You can use the Sequence Generator transformation to generate a sequence of numbers and then filter out the records based on this sequence. Set the Sequence Generator transformation with current value = 0, end value = 7, and reset enable. Connect the "NextVal" port to an Expression transformation and create an output port with the condition "NextVal = 7." This will filter the records and only allow the first 7 records to pass through.
+
+If you have ten flat files with the same structure and want to load them into a single target, and the mapping should show only one source, what steps would you take to achieve this?
+Answer: Create a file system with a file extension .txt. In that file, copy all the paths of the 10 flat files. At the session level, set the source type to "Indirect," specify the file directory as the file system path, and set the source file name to the name of the file system.txt. This way, you can dynamically load the data from the ten flat files into a single target, and the mapping will show only one source.
+
+When using a lookup and you have 5 records, but you don't need the 1st and 2nd records, what is the procedure to achieve this using a lookup?
+Answer: Use a lookup override with the following SQL:
+   ```sql
+   SELECT * FROM emp MINUS SELECT * FROM emp WHERE ROWNUM <= 2;
+   ```
+Note: You cannot use ">" with ROWNUM.
+
+When using a Router transformation, can you see the default group, and if yes, how?
+Answer: Yes, you can see the default group in the Router transformation. Initially, when you add a Router transformation, there are no groups. However, when you add any group, a default group is automatically added. You can add conditions for this default group based on your requirements. If no conditions are specified, all records that don't meet the specified conditions will go to this default group. Connect it to any other transformation and use it according to your requirements.
+
+What is a left outer join?
+
+Answer: A left outer join is a type of join operation in a relational database that returns all the rows from the left table and the matching rows from the right table. If there is no match, NULL values are returned for columns from the right table. In SQL, a left outer join is typically expressed using the "LEFT OUTER JOIN" keyword. For example:
+
+```sql
+SELECT M.*, D.*
+FROM Master M
+LEFT OUTER JOIN Details D ON M.ID = D.ID;
+```
+In this query, all records from the Master table are returned, along with matching records from the Details table.
+
+When using a dynamic lookup, if the condition matches, what will be the output?
+Answer: If the condition in a dynamic lookup matches, the row in the cache will be updated, leaving it unchanged. This lookup property is recommended only for mappings where the sources have duplicate records.
+
+What is the difference between a view and a materialized view?
+Answer: A view is a stored query with no physical role. It needs to resolve the query each time it is queried, and its performance may decrease if aged out of the cache. On the other hand, a materialized view has a physical table associated with it. It does not have to resolve the query each time it is queried, and depending on the size and complexity of the result, a materialized view should perform better.
+
+How can you import an Oracle sequence into Informatica?
+Answer: You can import an Oracle sequence into Informatica using stored procedures or SQL Override through an unconnected lookup. This allows you to use the sequence values within your Informatica mappings.
+
+Why can't we put a Sequence Generator or Update Strategy transformation before a Joiner transformation?
+Answer: The Sequence Generator and Update Strategy transformations are typically not placed before a Joiner transformation because the Joiner is designed to join two different sources based on a common key. If you use the Update Strategy transformation and try to use the DD_delete and DD_reject options, some of the data may get deleted, and you won't be able to see it at the Joiner output. The Update Strategy transformation is commonly used for row-level operations and is not suited for the purpose of preparing data for a join.
+
+What is metadata?
+Answer: Metadata is data about data. In the context of Informatica, it refers to information about the structure, relationships, and characteristics of the data used in ETL processes. The repository in Informatica contains metadata, storing details about mappings, tasks, sources, targets, transformations, and more.
+
+How can you concatenate values from multiple rows into a single row like 'abcx' and 'abcy'?
+Answer: You can achieve this by using the UNION ALL operator in a SQL query. For example:
+
+```sql
+SELECT c1 || c2 || c3 || c4 FROM your_table
+UNION ALL
+SELECT c1 || c2 || c3 || c5 FROM your_table;
+``
+This query concatenates values from multiple rows into a single row for each unique combination.
+
+Where is the cache stored in Informatica?
+Answer: The cache is stored in the cache directory in Informatica. For Aggregator, Joiner, and Lookup transformations, cache values are stored in the cache directory. For the Sorter transformation, cache values are stored in the temp directory.
+
+What is SQL override, and what is its use?
+Answer: SQL override is a process of writing user-defined SQL queries to define SQL joins, source filters, sort input data, and eliminate duplicates in the context of Informatica transformations. It allows developers to customize the SQL query generated by Informatica for a source, providing more control over the data extraction process.
+
+How can you get the first row without using Rank transformation?
+Answer: You can achieve this in multiple ways. One approach is to use the FIRST() function in the Aggregator transformation if the first row has a not null condition. Alternatively, you can use a combination of Sequence Generator and Filter transformations to filter rows based on the sequence number.
+
+How do you load data while designing the schema, and which one comes first, dimensions, or facts?
+Answer: In ETL processes, dimension tables are loaded first, followed by fact tables. Loading dimension tables first is necessary because the primary keys of dimension tables are linked with foreign keys in fact tables, ensuring proper lookup and relationships between the two.
+
+What is the purpose of the SQL override in the Source Qualifier transformation?
+Answer: The SQL override in the Source Qualifier transformation is used to write custom SQL queries that override the default query generated by Informatica. It allows developers to specify the SQL joins, source filters, and other conditions based on their requirements.
+
+How can you load data in the same format as the source flat file with a salary of 10,000?
+Answer: To load data in the same format with a salary of 10,000, you can use the TO_CHAR function in the SQL override of the Source Qualifier transformation. For example:
+```sql
+SELECT TO_CHAR(10000, '99999.99') AS sal FROM dual;
+```
+This query formats the salary as '10,000.00'.
+
+Can you provide some dimension table names in a banking domain Informatica project?
+Answer: Dimension tables in a banking domain Informatica project may include:
+1. Customer
+2. Accounts
+3. Transaction Dirty Dimension
+4. Time
+
+Fact tables:
+1. avg_policies
+2. sum_accounts
