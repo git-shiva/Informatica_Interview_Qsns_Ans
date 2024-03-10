@@ -148,3 +148,13 @@ Answer: Dimension tables in a banking domain Informatica project may include:
 Fact tables:
 1. avg_policies
 2. sum_accounts
+
+diff between nvarchar2 and varchar2?
+Answ: VARCHAR2:
+It is used to store variable-length character strings.
+The character set used by VARCHAR2 is the database character set, which is specified at the time of database creation.
+It does not support multibyte character sets, so it may not be suitable for storing characters from languages with complex character sets like Chinese or Japanese.
+NVARCHAR2:
+It is also used to store variable-length character strings.
+Unlike VARCHAR2, NVARCHAR2 uses the national character set, which is typically a Unicode character set like UTF-8 or UTF-16. This makes it suitable for storing characters from various languages, including those with complex character sets.
+It supports multibyte character sets.
