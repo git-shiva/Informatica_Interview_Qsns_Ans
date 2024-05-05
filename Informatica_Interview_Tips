@@ -1,0 +1,41 @@
+While Introducing yourself focus on below points Make sure you add below point in detail:
+---------
+Explain what flavors of Data Projects you worked on so far (i.e. Data Migration, Data Marts, Building Enterprise warehouse/Enterprise Data Hub/Data Lakes and Data Conversion (i.e. from On-prem to cloud)
+Explain Different types of source data you handled so far (i.e. Types of relational DB, File, XML, API/Webservices, Salesforce, Semi structured data)
+Explain Different types of Databases you loaded into i.e Oracle/Db2/SQL Server OR Azure/Redshift/GBQ
+Any code automation/generic template which you used or worked on your projects (either Python script based or using Informatica/IICS)
+Working experience on End to end SDLC (i.e. Requirement Gathering/Analysis à Design à Review à Build/Unit Test à QA Support à Production Handoff à Post production warranty)
+Apart from Informatica/IICS what other ETL tools you worked on i.e. BODS/IICS/Datastage/Talend or ANY cloud ETL tools (Metadata manager, Analyst, DVO, Data Quality)
+Any Realtime experience connecting/bringing Realtime data (i.e. API/CDC/Webservices) and its challenges
+Interaction/coordination with Business/Product Owners à Architect Team à QA/UAT Support à Deployment Team à Support Team
+Any ERWIN/Modelling tool experience
+_____________________________________________________
+
+Complex integration workflows from heterogeneous data sources:
+--------------------------------------------------
+When they asked for any situation, always make sure your information should support with practical/live example from your project. E.g. As part of building EDW Project where you need to integrate multiple sources what are the challenges you encountered while integrating different sources
+Like. Files, Mainframe, Databases, Salesforce data, Realtime data, semi structured data (JSON,Kafka)
+
+For each and every question follow the strategy of STAR (Situation (Issues/Assignment given to you) à Task (your Responsibility) à Approach (what is your approach/Steps taken) à Results (what is the outcome)
+E.g. In any of the project if you have given a task to improve the job which is taking XX days/Hours, what are the steps you have taken to reduce the hours
+_____________________________________________________________
+
+Elaborate your working experience b/w Informatica PC vs IICS:
+-----------------------------------------------
+Tool  comparison
+Challenges converting the code from Informatica to IICS
+IICS PDO (Push down Optimization) and its benefits
+E.g. Connecting multiple mapplets wont work in IICS where it will work in PC
+https://onlinehelp.informatica.com/iics/prod/cdi/en/index.htm#page/cloud-data-integration-odbc-connector/Pushdown_optimization_functions.html -> refer link where some of the functions won’t work using PDO
+
+Code deployments (especially schedulers)
+How Jobs scheduling/dependency has taken i.e. using Informatica tool/Control-M/Uc-4/ or any third party tools
+GitHub/SVN or any version controlling tools
+_______________________________________________________________
+
+Building Dimensions/Facts:
+Always explain logic using Informatica/IICS code along with live examples and efficient way of writing code to handle huge loads as well ( Partitions in On-prem/Informatica vs PDO in IICS/Cloud)
+Type1, Type2 and Types of Fact loads
+Phases of brining the data from Source to final destination tables (which one are transient and which one are persistent tables)
+Examples of Handling huge volumes
+ 
