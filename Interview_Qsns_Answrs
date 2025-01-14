@@ -1,153 +1,204 @@
-How do you pull records on a daily basis into your ETL Server?
-Answer: Running incremental/delta/cdc.. For this, we have so many logics, some of them are:
-1) Using mapping level variable
-2) Using control table and ...
+TCS
 
-If my source has 15 tables and the target is one, how do I join tables?
-Answer: If your source is a flat file and has the same structure, you can go for indirect file type. If the source is a relational file, then you can use Source Qualifier - SQL override or join condition, or Joiner Transformation (n-1).
+How you pull the records on daily basis into your ETL Server.
+Answer:
+Running incremental/delta/cdc. For this, we have several logics such as:
+1. Using mapping level variable
+2. Using a control table
 
-If a flat file has 100,000 records and I want to convert it to an Excel file, what happens? (Because an Excel sheet has 65,536 columns, but flat files have one lakh columns.) How do I get one lakh columns in an Excel sheet?
-Answer: If you want to convert a flat file to an Excel format, convert it into an Excel format and save it as .CSV (comma-separated value) format. It has a capacity of 10 lakhs records.
+How to Join Tables if my Source is having 15 tables and the target is one?
+Answer:
+If your source is a Flat file and has the same structure, you can go for indirect file type. If the source is relational, you can use:
+- Source Qualifier - SQL override or join condition.
+- Joiner Transformation (n-1)
 
-How can I schedule a workflow to run every day, three times, with a 3-hour gap between each run?
-Answer: In the Scheduler, there is an option called Customized Report. By selecting the Days(s) option in the "Repeat every" field, you can see Daily Frequency options. Choose the "Run Every" option for the particular hours (the gap between every run of the workflow). After that, select the "End after (3 runs)" option in the main Scheduler tab under the "End Options."
+A flat file having 1 lakh records. If I want to convert it into an Excel file, what happens? (Because an Excel sheet has 65536 columns but flat files have lakh columns). How to get one lakh columns in an Excel sheet?
+Answer:
+If you want to convert a Flat file to Excel format:
+- Convert it into Excel format and save it as .CSV (comma-separated value) format. It can handle up to 10 lakh records.
 
-What is a Mapplet, and what is its logic?
-Answer: A Mapplet is a reusable object in Informatica PowerCenter that represents a set of transformations and allows you to reuse the transformation logic across multiple mappings. We can create any number of Mapplets for one mapping, and there is no limit to the number of Mapplets. Each Mapplet can have one or more logics, and there is no limit to the number of logics within a Mapplet.
+MINDTREE
 
-When developing a project, what performance issues may arise?
-Answer: In an Informatica project, common performance issues include tuning the mapping, minimizing the use of active transformations, choosing the best loading options, partitioning the data, and using index-less target tables.
+I have a workflow I want to run this every day 3 times every 3 hours, how can you schedule that?
+Answer:
+In the Scheduler, select the "Customized Report" option. By choosing "Days(s)" option in "Repeat every", you can see "Daily Frequency" options. Select "Run Every" for particular hours (gap between every run of the workflow), then select "End after" (3 runs) in the main Scheduler tab.
 
-Why does a table with both INDEX and CONSTRAINTs potentially raise performance issues, and why might it perform better when dropping the index and disabling the constraint?
-Answer: Dropping the index and disabling the constraint can improve performance because it reduces the overhead of maintaining these structures during data loading. Loading data without these constraints and indexes initially allows for faster data insertion. After loading, you can configure the indexes and constraints on the table.
+What is Mapplet? What is logic? We can create any No of Mapplets for 1 mapping. There is no limit for Mapplets. Every Mapplet can have a Logic or logics, There is no limit for logics.
+Answer:
+A Mapplet is a reusable object that can contain transformations and logic. There's no limit on how many Mapplets you can create for one mapping or the number of logics within each Mapplet.
 
-What are some frequently used Unix commands in Informatica?
-Answer: Common Unix commands in Informatica include SED commands, AWK commands, DIR commands, and file and copy commands.
+KPIT
 
-How can you identify whether a parameter in a parameter file is a workflow parameter or a mapping parameter?
-Answer: Mapping parameters start with $$, while workflow parameters start with $.
+When we develop a project what are the performance issues will raise?
+Answer:
+Performance issues in Informatica include:
+- Tuning the mapping
+- Using fewer active transformations
+- Choosing the best loading option
+- Partitioning the data
+- Using tables without indexes
 
-What is the query to find the nth highest salary?
-Answer: There are three ways to find the nth highest salary in a table. Here are examples of two of them:
-1) `select distinct sal from emp e1 where &n=(select count distinct sal from emp e2 where e1.sal <=e2.sal);`
-2) `select empno, ename, sal, deptno, rank() over (order by sal desc) as ra from emp where ra=&n;`
+KPIT 2: If a table has INDEX and CONSTRAINT, why does it raise performance issues because when we drop the index and disable the constraint it performed better?
+Answer:
+Yes, dropping the index and disabling the constraint can lead to better performance because:
+- It loads data based only on the particular table, avoiding checks for foreign key relations or conditions in constraints.
+- Indexes and constraints should be configured after data loading for optimal performance.
 
-What is a Cursor, and why use it?
-Answer: In Oracle, when a query returns more than one row, a result set is produced and stored in memory. Cursors allow the programmer to access this result set and process the data in different ways for each row. Cursors are handy when dealing with queries that return multiple rows. There are different types of cursors, and Oracle PL/SQL declares a cursor implicitly for all queries and DML statements. Cursors are particularly useful when dealing with queries that return multiple rows.
+KPIT 3: What are Unix commands frequently used in Informatica?
+Answer:
+Common Unix commands used in Informatica include:
+- SED commands
+- AWK commands
+- Directory commands
+- File commands
+- Copy commands
+
+By seeing the parameter file how do you identify whether it is a workflow parameter or mapping parameter?
+Answer:
+A mapping parameter starts with $$ and a workflow parameter starts with $.
+
+What is the query to find nth highest salary? What is the use of cursors?
+Answer:
+There are 3 ways to find the nth highest salary in a table (e.g., emp):
+1. `select distinct sal from emp e1 where &n=(select count(distinct sal) from emp e2 where e1.sal <= e2.sal);`
+2. `select empno, ename, sal, deptno, rank() over (order by sal desc) as ra from emp where ra=&n;`
+3. `select empno, ename, sal, deptno, dense_rank() over (order by sal desc) as ra from emp where ra=&n;`
+
+What is a Cursor?
+Answer:
+When a query is executed in Oracle, a result set is produced and stored in memory. Oracle allows programmers to access this result set through cursors.
+
+Why use a cursor?
+Answer:
+Many times, when a query returns more than one row, we might want to process each row differently. Cursors are useful here.
+
+Types of cursors:
+- Oracle PL/SQL implicitly declares cursors for all queries and DML statements, but we typically don't use these for queries returning one row.
 
 What are the types of indexes generally used in Informatica?
-Answer: In Informatica, B-tree and bitmap indexes are commonly used. B-tree indexes are suitable for low cardinality, while bitmap indexes are used for high cardinality, providing better performance.
+Answer:
+B-tree and bitmap indexes are commonly used. B-tree for low cardinality and bitmap for high cardinality, which gives better performance.
 
-Why do we select the table with the minimum number of records as the Master table in a joiner?
-Answer: The Integration Service (IS) reads data from the master table and builds data cache and data index for cache building. After that, it reads data from the detail table to perform joins. Because the master table typically has very few records compared to the detail table, this approach results in less runtime, ultimately saving time and increasing performance.
+Why select the table with the minimum number of records as the Master table in a joiner?
+Answer:
+The Integration Service reads data from the master table to build a data cache and index cache. With fewer records in the master table, there's less data to cache, saving time and increasing performance.
 
-What is the difference between a joiner and lookup transformation, and what basic things can be done with both if you are not a performance expert?
-Answer: Joiner and lookup transformations are used for combining data from different sources. Joiner operates on sources, while lookup operates on both source and target. Some basic functions include matching and merging data. However, limitations arise when working with heterogeneous sources. Joiner doesn't support nonequi joins, whereas lookup supports nonequi joins. Joiner doesn't match for null values, but lookup does. Joiner supports only equality operator in join conditions, while lookup supports <=, >=, =, != in the lookup condition.
+What is the difference between joiner and lookup transformation?
+Answer:
+- Joiner operates on sources, while lookup can operate on both source and target.
+- Joiner does not support nonequi joins, but lookup does.
+- Joiner doesn't match for null values, whereas lookup does.
+- Joiner supports only equality operators, lookup supports <=, >=, =, != in conditions.
+
+L&T
 
 How can you display only hidden files in UNIX?
-Answer: You can use the following command: `ls -a | grep "^\."`
+Answer:
+`ls -a | grep "^\."`
 
-Tell me one complex query in Oracle.
-Answer: Here is an example of a complex query in Oracle:
+Tell me one complex query in Oracle?
+Answer:
+`SELECT users.user_id, users.email, max(classified_ads.posted) FROM users, classified_ads WHERE users.user_id = classified_ads.user_id GROUP BY users.user_id, users.email ORDER BY upper(users.email);`
 
-```sql
-SELECT users.user_id, users.email, MAX(classified_ads.posted)
-FROM users, classified_ads
-WHERE users.user_id = classified_ads.user_id
-GROUP BY users.user_id, users.email
-ORDER BY UPPER(users.email);
-```
+Data is passed from one active transformation and one passive transformation into a passive transformation. Is the mapping valid or invalid?
+Answer:
+The mapping is invalid. We can never connect an active transformation directly to a passive transformation.
 
-Is the mapping valid or invalid if data is passed from one active transformation and one passive transformation into a passive transformation?
-Answer: The mapping is invalid. Connecting the output of a passive transformation to another passive transformation is not allowed in Informatica. Passive transformations can only receive data from an active transformation.
+Can you connect the output of joiner to an expression transformation where the output of joiner comes from different pipelines?
+Answer:
+Yes, you can connect data from active and passive transformations from different pipelines to a joiner and then to an expression transformation.
 
-Can you connect the output of a joiner to an expression transformation where the output of the joiner is from different pipelines?
-Answer: Yes, you can connect the output of a joiner to an expression transformation, even if the output comes from different pipelines. The joiner transformation combines data from different sources based on a specified condition, and the expression transformation can then operate on the combined data set.
+I have one source with 52 million records; I want the target to have only 7 records. How will you do this, what logic to implement?
+Answer:
+Use a sequence generator transformation where Current Value = 0, End Value = 7, Reset enabled, then drag the NextVal port to an expression transformation. Create an output port with the condition NextVal = 7.
 
-If you have one source with 52 million records, and you want to load only 7 records into the target, how would you achieve this?
-Answer: You can use the Sequence Generator transformation to generate a sequence of numbers and then filter out the records based on this sequence. Set the Sequence Generator transformation with current value = 0, end value = 7, and reset enable. Connect the "NextVal" port to an Expression transformation and create an output port with the condition "NextVal = 7." This will filter the records and only allow the first 7 records to pass through.
+I have ten flat files with the same structure; if I want to load them into a single target, and the mapping needs to show only one source. What will be the steps taken to achieve this?
+Answer:
+Create a file system with extension .txt containing all file paths. In session properties:
+- Source type: Indirect
+- File directory: File system path
+- Source file name: Name of file system.txt
 
-If you have ten flat files with the same structure and want to load them into a single target, and the mapping should show only one source, what steps would you take to achieve this?
-Answer: Create a file system with a file extension .txt. In that file, copy all the paths of the 10 flat files. At the session level, set the source type to "Indirect," specify the file directory as the file system path, and set the source file name to the name of the file system.txt. This way, you can dynamically load the data from the ten flat files into a single target, and the mapping will show only one source.
+When using lookup, if you have 5 records, but don't need the 1st and 2nd records, what will be the procedure to achieve this by using lookup?
+Answer:
+Use lookup override with `SELECT * FROM emp MINUS SELECT * FROM emp WHERE rownum<=2`.
 
-When using a lookup and you have 5 records, but you don't need the 1st and 2nd records, what is the procedure to achieve this using a lookup?
-Answer: Use a lookup override with the following SQL:
-   ```sql
-   SELECT * FROM emp MINUS SELECT * FROM emp WHERE ROWNUM <= 2;
-   ```
-Note: You cannot use ">" with ROWNUM.
+Can we see the default group when we use a router? If yes, how?
+Answer:
+Yes, when you add a router transformation, no groups initially exist. When you add any group, a default group is also added. You can add conditions for this group, or if no conditions are specified, all records that don't meet other conditions go to this default group.
 
-When using a Router transformation, can you see the default group, and if yes, how?
-Answer: Yes, you can see the default group in the Router transformation. Initially, when you add a Router transformation, there are no groups. However, when you add any group, a default group is automatically added. You can add conditions for this default group based on your requirements. If no conditions are specified, all records that don't meet the specified conditions will go to this default group. Connect it to any other transformation and use it according to your requirements.
+What is left outer join?
+Answer:
+A left outer join returns all records from the left (or first) table mentioned in the join condition and matching records from the right table. If there's no match, the result is NULL on the right side.
 
-What is a left outer join?
+When we use dynamic lookup, if condition matches what will be the output?
+Answer:
+It updates the row in the cache or leaves it unchanged. This property is recommended when sources have duplicate records.
 
-Answer: A left outer join is a type of join operation in a relational database that returns all the rows from the left table and the matching rows from the right table. If there is no match, NULL values are returned for columns from the right table. In SQL, a left outer join is typically expressed using the "LEFT OUTER JOIN" keyword. For example:
+A View is just a stored query and has no physical role. Once a view is instantiated, performance can be quite good until it is aged out of the cache. A materialized view has a physical table associated with it, which does not need to resolve the query each time, potentially offering better performance for large or complex queries.
 
-```sql
-SELECT M.*, D.*
-FROM Master M
-LEFT OUTER JOIN Details D ON M.ID = D.ID;
-```
-In this query, all records from the Master table are returned, along with matching records from the Details table.
+How to import an Oracle sequence into Informatica?
+Answer:
+With stored procedures or through SQL Override in an unconnected lookup.
 
-When using a dynamic lookup, if the condition matches, what will be the output?
-Answer: If the condition in a dynamic lookup matches, the row in the cache will be updated, leaving it unchanged. This lookup property is recommended only for mappings where the sources have duplicate records.
-
-What is the difference between a view and a materialized view?
-Answer: A view is a stored query with no physical role. It needs to resolve the query each time it is queried, and its performance may decrease if aged out of the cache. On the other hand, a materialized view has a physical table associated with it. It does not have to resolve the query each time it is queried, and depending on the size and complexity of the result, a materialized view should perform better.
-
-How can you import an Oracle sequence into Informatica?
-Answer: You can import an Oracle sequence into Informatica using stored procedures or SQL Override through an unconnected lookup. This allows you to use the sequence values within your Informatica mappings.
-
-Why can't we put a Sequence Generator or Update Strategy transformation before a Joiner transformation?
-Answer: The Sequence Generator and Update Strategy transformations are typically not placed before a Joiner transformation because the Joiner is designed to join two different sources based on a common key. If you use the Update Strategy transformation and try to use the DD_delete and DD_reject options, some of the data may get deleted, and you won't be able to see it at the Joiner output. The Update Strategy transformation is commonly used for row-level operations and is not suited for the purpose of preparing data for a join.
+Why can't we put a sequence generator or update strategy transformation before joiner transformation?
+Answer:
+Joiner is meant to join two different sources. If you use Update Strategy with options like DD_delete or DD_reject, some data might be deleted or rejected, altering the output expected from the joiner.
 
 What is metadata?
-Answer: Metadata is data about data. In the context of Informatica, it refers to information about the structure, relationships, and characteristics of the data used in ETL processes. The repository in Informatica contains metadata, storing details about mappings, tasks, sources, targets, transformations, and more.
+Answer:
+Metadata is 'data about data'. In Informatica, the repository stores metadata like mappings, tasks, etc.
 
-How can you concatenate values from multiple rows into a single row like 'abcx' and 'abcy'?
-Answer: You can achieve this by using the UNION ALL operator in a SQL query. For example:
+We have tables like:
+c1 a c2 b c3 c c4 x c5 y
+And I need output like abcx in a single row and abcy in another single row. How do you achieve this?
+Answer:
+Override the source qualifier with:
+`SELECT c1, c2, c3, c4 FROM table1 UNION ALL SELECT c1, c2, c3, c5 FROM table1;`
 
-```sql
-SELECT c1 || c2 || c3 || c4 FROM your_table
-UNION ALL
-SELECT c1 || c2 || c3 || c5 FROM your_table;
-``
-This query concatenates values from multiple rows into a single row for each unique combination.
+We have to use ORDER BY, WHERE, HAVING to implement SQL query:
+In a query, we can use all three, but using WHERE and HAVING together might not make sense:
+- Use WHERE before GROUP BY.
+- Use HAVING after GROUP BY.
+- ORDER BY is typically at the end.
 
 Where is the cache stored in Informatica?
-Answer: The cache is stored in the cache directory in Informatica. For Aggregator, Joiner, and Lookup transformations, cache values are stored in the cache directory. For the Sorter transformation, cache values are stored in the temp directory.
+Answer:
+Cache for Aggregator, Joiner, and Lookup transformations is stored in the cache directory. For Sorter, it's in the temp directory.
 
-What is SQL override, and what is its use?
-Answer: SQL override is a process of writing user-defined SQL queries to define SQL joins, source filters, sort input data, and eliminate duplicates in the context of Informatica transformations. It allows developers to customize the SQL query generated by Informatica for a source, providing more control over the data extraction process.
+How can we add header and footer to flat files?
+Answer:
+Go to session properties, mapping tab, select source, then in header command and footer command options, type the command.
 
-How can you get the first row without using Rank transformation?
-Answer: You can achieve this in multiple ways. One approach is to use the FIRST() function in the Aggregator transformation if the first row has a not null condition. Alternatively, you can use a combination of Sequence Generator and Filter transformations to filter rows based on the sequence number.
+What is data merging, data cleansing, and sampling?
+Answer:
+- Data merging: Summarizing multiple detailed values into one.
+- Data cleansing: Eliminating inconsistent data.
+- Sampling: Arbitrarily reading data from a group of records.
 
-How do you load data while designing the schema, and which one comes first, dimensions, or facts?
-Answer: In ETL processes, dimension tables are loaded first, followed by fact tables. Loading dimension tables first is necessary because the primary keys of dimension tables are linked with foreign keys in fact tables, ensuring proper lookup and relationships between the two.
+I have a thousand records in my source (flat file); I want to load 990 records, not loading the first 5 and last 5 records at the Informatica level?
+Answer:
+Pass records from source qualifier to expression, create a variable with aggregation as count and assign its value as 0. Create two parameters with values 5 and 995. In the expression editor:
+- Sequence = setcountvariable(variable name you created).
+Connect this to a router with a condition sequence>5 and sequence<995.
 
-What is the purpose of the SQL override in the Source Qualifier transformation?
-Answer: The SQL override in the Source Qualifier transformation is used to write custom SQL queries that override the default query generated by Informatica. It allows developers to specify the SQL joins, source filters, and other conditions based on their requirements.
+How is the data loaded while designing the schema? Which one first (for e.g., dimensions and facts)?
+Answer:
+Dimension tables are loaded first, followed by fact tables, because all primary keys of dimension tables link with foreign keys in fact tables.
 
-How can you load data in the same format as the source flat file with a salary of 10,000?
-Answer: To load data in the same format with a salary of 10,000, you can use the TO_CHAR function in the SQL override of the Source Qualifier transformation. For example:
-```sql
-SELECT TO_CHAR(10000, '99999.99') AS sal FROM dual;
-```
-This query formats the salary as '10,000.00'.
+What is SQL override? What is the use of it?
+Answer:
+SQL override allows you to write custom SQL queries to define joins, filters, sort input data, and eliminate duplicates.
 
-Can you provide some dimension table names in a banking domain Informatica project?
-Answer: Dimension tables in a banking domain Informatica project may include:
-1. Customer
-2. Accounts
-3. Transaction Dirty Dimension
-4. Time
+How to get the first row without using rank transformation?
+Answer:
+- Use FIRST() function in an aggregator transformation if the first row has a non-null value.
+- Use a sequence generator followed by a filter where nextval=1.
+- In Source Qualifier SQL Override: `SELECT ... FROM ... WHERE ROWNUM=1`.
 
-Fact tables:
-1. avg_policies
-2. sum_accounts
+I have Flat file data like sal having 10,000. I want to load the data in the same format as sal 10,000. How can this be achieved?
+Answer:
+In target table options, you can use thousand separators, or use `TO_CHAR(10000, '99,999.00') FROM DUAL;`.
 
 diff between nvarchar2 and varchar2?
 Answ: VARCHAR2:
@@ -158,3 +209,703 @@ NVARCHAR2:
 It is also used to store variable-length character strings.
 Unlike VARCHAR2, NVARCHAR2 uses the national character set, which is typically a Unicode character set like UTF-8 or UTF-16. This makes it suitable for storing characters from various languages, including those with complex character sets.
 It supports multibyte character sets.
+
+Tell me some dimension table names in a banking domain Informatica project?
+Answer:
+Fact Tables:
+1. Bank
+2. Advanced
+
+Dimension Tables:
+1. Customer
+2. Accounts
+3. Transaction
+4. Time
+
+Write a SQL query for the following source?
+
+Subject Marks
+Maths   30
+Science 20
+Social  80
+
+Required output:
+Maths Science
+30    20
+
+Answer:
+SELECT (SELECT Marks FROM sub WHERE Subject = 'Maths') AS Maths,
+       (SELECT Marks FROM sub WHERE Subject = 'Science') AS Science,
+       (SELECT Marks FROM sub WHERE Subject = 'Social') AS Social
+FROM sub
+GROUP BY 1;
+
+OR
+
+SELECT DECODE(Subject, 'Maths', Marks) AS Maths,
+       DECODE(Subject, 'Science', Marks) AS Science,
+       DECODE(Subject, 'Social', Marks) AS Social
+FROM <<table>>;
+
+Yesterday, my session ran for ten minutes. Today, it ran for 30 minutes. What's the reason? If any issues, how to solve that?
+Answer:
+Delay of session could be due to:
+1. A huge amount of source data.
+2. Slow database connection, causing slow data transfer.
+3. Performance issues with cache-based transformations.
+
+I want to load data into two targets. One is a dimension table, and the other is a fact table. How can I load at the same time?
+Answer:
+In a Data Warehouse environment, load data into the dimension table first, then into the fact table. Check if the fact table has a foreign key relationship with the dimension table. Use pipeline mapping:
+- Load dimension data first in one pipeline.
+- Load fact table data in the second pipeline using a lookup on the dimension table to get the key value, calculate measures using an Aggregator, group by dimension keys, and map to fact table ports. Set the "Target Load Plan" with dimension first, then fact.
+
+SOURCE:
+1 a
+1 b
+1 c
+2 a
+2 b
+2 c
+
+TARGET:
+A B C
+A B C
+
+In Oracle & Informatica level, how to achieve this?
+Answer:
+First sort by the first column (empid) using a sorter transformation, then in an expression transformation:
+- Create variable port v_ename:=IFF(prev.empid=curr.empid,v_ename||' '||ename,ename)
+- o_ename=v_ename
+- Convert to uppercase in another expression transformation.
+
+Tell me how many tables are used in your project and how many fact tables and dimension tables are used in your project?
+Answer:
+In my project, there are more than 100 tables, but in my module, we use only 10 to 15 tables. Dimension tables: 5 to 6, Fact tables: 1 or 2.
+
+What is the command to get the list of files in a directory in Unix?
+Answer:
+`ls`
+
+How can I explain my project architecture in an interview?
+Answer:
+1. **Source Systems:** Like Mainframe, Oracle, PeopleSoft, DB2.
+2. **Landing tables:** Act like source for easy access, backup, and reusability.
+3. **Staging tables:** Data from landing tables after validations.
+4. **Dimension/Facts:** For analysis and decision-making.
+5. **Aggregation tables:** Summarized data for managerial views.
+6. **Reporting layer:** Uses phases 4 and 5 for generating reports.
+
+Difference between session variables and workflow variables?
+Answer:
+A workflow variable can be used across sessions inside that workflow. A session variable is exclusive to that particular session.
+
+What is the full process from Information source to target, just like starting to production and development?
+Answer:
+- Data comes from OLTP systems into a database or flat files.
+- Data is transferred to staging using ETL tools like Informatica.
+- Staging to target might also use Informatica mappings.
+- Data then goes to QA for quality analysis, often in XML files.
+- Deployment onto the production environment.
+
+I HAVE A SOURCE FILE CONTAINING:
+1|A,1|B,1|C,1|D,2|A,2|B,3|A,3|B
+AND IN TARGET I SHOULD GET LIKE:
+1|A+B+C+D
+2|A+B
+3|A+B
+WHICH TRANSFORMATION I SHOULD USE?
+Answer:
+Aggregator with a group by on the column with values 1, 2, 3.
+
+My session has to run Monday to Saturday, not on Sunday. How to schedule in Informatica level?
+Answer:
+In the Scheduler, select the "Customized Report" option. Choose "week" in "Repeat every", then select the days you want the workflow to run.
+
+What is dynamic cache?
+Answer:
+Dynamic cache represents the data in the target. The Integration Service inserts or updates rows in the lookup cache based on data in associated ports:
+1. It's used to insert or update data in Cache and Target.
+2. Informatica dynamically inserts data into the target.
+3. Insertion happens only when the condition is false (no data in target or cache).
+
+Input:
+1 x,y,z
+2 a,b
+3 c
+
+Output:
+1 1 1
+2 2
+3
+
+x y z
+a b
+c
+
+Use the following flow:
+Source -> SQ -> Expression -> Normalizer -> Filter -> Target
+- In Expression, create variable ports for each value in Column2 using SUBSTR and INSTR functions.
+- Normalizer with 2 ports (Column1 and Column2), set occurrences for Column2 to 3.
+- Filter out NULL values if any before sending to the target.
+
+Hey, I am new to Informatica. Can anyone explain to me step by step how SCD will work?
+Answer:
+- Select all rows.
+- Cache the existing target as a lookup table.
+- Compare logical key columns in source against the target lookup table.
+- Compare source columns against target if keys match.
+- Flag new and changed rows.
+- Two data flows: one for new rows, one for changed rows.
+- Generate primary key for new rows.
+- Insert new rows to target.
+- Update changed rows in target.
+
+How to list Top 10 salaries, without using Rank Transmission?
+Answer:
+- Use Sorter (descending by salary) -> Sequence generator -> Filter (seq<=10).
+
+Can you use a flat file for a lookup table? Why?
+Answer:
+Yes, you can use a flat file for lookup, but not XML files directly. XML files need to be converted to another database or flat file format for use in lookups.
+
+In my source table, I want to delete the first and last records and load the in-between records into the target. How can this be possible?
+Answer:
+Source -> SQ -> Aggregator -> Filter -> Target:
+- Generate sequence number using sequence generator.
+- In Aggregator, group by sequence number, create min and max sequence ports.
+- In Filter, write condition seqnumber<>min AND max.
+
+How are the facts loaded?
+Answer:
+- Load dimension tables first, then fact tables.
+- Fact tables are often at the center of a star schema, surrounded by dimensions, containing measurements and foreign keys to dimensions.
+
+A typical fact table includes:
+- Measurements: Additive, non-additive, and semi-additive.
+- Metrics
+- Facts - multiple measurement fields.
+
+How are parameters defined in Informatica?
+Answer:
+Parameters are defined in the mapping parameters/variables wizard. They allow passing values outside the mapping without altering the mapping design but are constant unless changed by the user.
+
+How do you get sequence numbers with Oracle sequence generator function in Informatica without using a sequence generator transformation?
+Answer:
+Use an SQL transformation in query mode with a query like `SELECT Sequence_name.NEXTVAL FROM DUAL`.
+
+How to run a workflow in Unix?
+Answer:
+Use the pmcmd command:
+`pmcmd startworkflow -sv <service name> -d <domain name> -u <user name> -p <password> -f <folder name> <workflow name>`
+
+How do I stop my workflow after 10 errors?
+Answer:
+In session properties, there's an option for this.
+
+I have a source like this:
+1:2;3. I want to load the target as 123.
+Answer:
+In an expression transformation, use the REPLACE function or SQL query:
+`SELECT REPLACE('1:2;3', '1:2;3', '123') FROM DUAL;`
+
+What is a workflow variable?
+Answer:
+Similar to a mapping variable, workflow variables are used to pass workflow statistics or for configuring multiple runs of workflows.
+
+Which gives more performance when comparing fixed width and delimited files? Why?
+Answer:
+Fixed width gives better performance because it doesn't need to check for delimiters repeatedly.
+
+Two tables from two different databases with the same structure but different data. How to compare these two tables?
+Answer:
+For data comparison, join and compare. For metadata, use "Compare Objects" in Source Analyzer.
+
+A table contains some null values. How to get "not applicable (na)" in place of that null value in the target?
+Answer:
+Use the DECODE function in an expression transformation like:
+`IIF(IS_NULL(column_name), 'NA', column_name)`
+
+In SCD type 1, what is the alternative to that lookup transformation?
+Answer:
+Use "update else insert" in session properties.
+
+One flat file which is comma-delimited. How to change that comma delimiter to any other at runtime?
+Answer:
+Change it in session properties under "Set File Properties" for the flat file.
+
+Three date formats are there. How to change these three into one format without using an expression transformation?
+Answer:
+Use SQL Override with TO_DATE function and appropriate format masks.
+
+What are the reusable tasks in Informatica?
+Answer:
+Reusable tasks (created in Task Developer) include Session, Command, and Email tasks. Non-reusable tasks are created in Workflow Designer.
+
+What are events in workflow manager?
+Answer:
+Events are waits implemented in workflows before specified requirements are fulfilled:
+- Predefined (File Watcher event)
+- User-defined (Event Wait and Event Raise tasks)
+
+I want to skip the first 5 rows to load into the target. What will be the logic at the session level?
+Answer:
+One way is to use SQL Query in session properties:
+`SELECT * FROM employee MINUS SELECT * FROM employee WHERE rownum <= 5`
+
+Why is flat file load faster compared to table load?
+Answer:
+Flat files don't have indexes or keys, allowing direct loading. Relational loads involve index checks and data type parsing, which slows down the process.
+
+If I have an index defined on the target table and if I set it to bulk load, will it work?
+Answer:
+Bulk load does not support indexes, so the session will fail. Drop indexes before bulk loading and recreate them after.
+
+I have an Oracle table A and target B. I don't know how many records. I want to get the last record in table A as the first record in target table B. Write a SQL query.
+Answer:
+`CREATE TABLE b AS SELECT * FROM a ORDER BY rownum DESC;`
+
+I have two tables, table 1 having 2 columns and 3 rows, table 2 having 3 columns and 2 rows. What is the output if I do left outer join, full outer join, right outer join?
+Answer:
+Given tables:
+- Left table (table1): c1, c2 (1,2), (4,5), (7,8)
+- Right table (table2): c3, c4, c5 (1,1,10), (6,5,12)
+
+Left join:
+1,2,1,1,10
+4,5,NULL,NULL,NULL
+7,8,NULL,NULL,NULL
+
+Right join:
+1,2,1,1,10
+NULL,NULL,6,5,12
+
+Full outer:
+1,2,1,1,10
+4,5,NULL,NULL,NULL
+7,8,NULL,NULL,NULL
+NULL,NULL,6,5,12
+
+Which transformation should we use to get the 5th rank member from a table in Informatica?
+Answer:
+Use Rank and Filter transformations:
+- Source -> SQ -> Rank -> Filter (Rank = 5) -> Target
+
+How do you avoid duplicate records without using source qualifier, expression, aggregator, sorter, and lookup transformations?
+Answer:
+Use Unix command in pre-session:
+`sort -u file1 > newfile`
+
+In a mapping, when we use an aggregator transformation, we'll use a group by port. If the group by is not selected by default, it will take only the last column. Why?
+Answer:
+The aggregator performs calculations from the first to the last record. Without a group by, it returns the last record from all input rows.
+
+What is the use of Data Mart?
+Answer:
+For overwriting Data, like loading flat file data from DSO to Cube. It's used for loading data from one infoprovider (used as a data target) to another data target, embodying the concept of Data Mart.
+
+How will you get 1st, 3rd, and 5th records in a table? What is the query in Oracle?
+Answer:
+Display odd records:
+`SELECT * FROM EMP WHERE (ROWID,1) IN (SELECT ROWID, MOD(ROWNUM,2) FROM EMP)`
+
+Display even records:
+`SELECT * FROM EMP WHERE (ROWID,0) IN (SELECT ROWID, MOD(ROWNUM,2) FROM EMP)`
+
+Have you developed documents in your project? And what documents do we develop in real-time?
+Answer:
+We create Low-Level Design documentation in real-time specifying naming conventions, source/target types, business requirements, and logics.
+
+My source contains data like:
+cno cname sal
+100 rama@gmail.com 1000
+200 karuna@yahoo.com 2000
+
+I want to load my data to the target like:
+cno cname sal
+100 Rama 1000
+200
+karuna 2000
+
+Answer:
+In the expression editor, write:
+`REPLACESTR(0, cname, (SUBSTR(cname, INSTR(cname, '@'), INSTR(cname, 'm', -1, 1)), '')`
+
+My source is a comma-delimited flat file like:
+eno, ename, sal
+111,sri,ram,kumar,1000
+
+My target should be:
+eno ename sal
+111 sri ram kumar 1000
+
+Answer:
+In the mapping, use:
+- Source -> Source Qualifier -> Expression -> Target
+- In the expression, concatenate the name columns:
+  `column2 || ' ' || column3 || ' ' || column3`
+
+Hi, in a mapping, I have 3 targets and one fixed-width file as source. Total 193 records are there. I connected one port in the aggregator to all 3 targets. The same value needs to be loaded into these 3 targets. It is loaded like that only but in different order. Why? The order of insertion should be the same for all 3 targets, right? Then why is the order changed?
+Answer:
+Informatica does not consider the sequence of records at insertion time. Use a Sequence Generator transformation or Sorter for maintaining order.
+
+Hi, In source, I have records like:
+No name address
+10 Manoj mum
+10 Manoj Delhi
+20 kumar usa
+20 kumar Tokyo
+
+I want records in target like:
+No name addr1 addr2
+10 Manoj mum Delhi
+20 kumar usa Tokyo
+
+Answer:
+Use a dynamic lookup to check if the record exists:
+- If not, insert into No, Name, and Address1.
+- If it does, update Address2 with the current record.
+
+I have one flat file as target in a mapping. When I am trying to load data the second time into it, the records already in the flat file are getting overridden. I don't want to override existing records. Note: we can do this by implementing CDC/Incremental pool logic if the target is relational. But this is a flat file. So, even if I use this same technique, it will override only. So what is the solution? Is there any option at session level for flat file target?
+Answer:
+It's simple. At session level: 
+- Double-click on session -> Mapping tab -> Target properties -> Check "Append if exists".
+
+What is version control in Informatica?
+Answer:
+Version control is an option during Informatica software installation. When enabled, each change creates a new version of an object. When disabled, changes overwrite the initial version without creating a new one.
+
+How to connect two or more tables with a single source qualifier?
+Answer:
+1. Drag all tables into Mapping Designer.
+2. Delete all associated source qualifiers.
+3. Create a new Source Qualifier transformation.
+4. Drag all columns from all tables into this single Source Qualifier.
+
+What is the procedure to use a mapping variable in a source qualifier transformation?
+Answer:
+Go to the Source Qualifier properties, open the User Defined Join SQL editor, and on the left, select "Variables" where you can use mapping variables.
+
+How do you find out whether the column is numeric or a combination of characters and numbers or it contains characters, numeric, and special characters?
+Answer:
+In an expression transformation:
+- Use `IIF(IS_NUMBER(id), 1, 0)` to check for numeric values.
+- Or use ASCII() function to determine character types based on ASCII values.
+
+Input flat file 1 has 5 columns, flat file 2 has 3 columns (no common column), output should contain merged data (8 columns). How to achieve this?
+
+Answer:
+- Use two pipelines, each with an Expression transformation to add a common field using a mapping variable for record count.
+- Join the two pipelines using a Joiner transformation on this common field.
+
+Input is like:
+1 1 1
+2 2
+3 
+
+Output should be:
+1 2 3
+
+How can you achieve this using Rank transformation?
+Answer:
+Source -> SQ -> Aggregator -> Filter -> Target:
+- In Aggregator, calculate COUNT(empid) to eliminate duplicates.
+- Filter where COUNT(empid) = 1 to get unique records.
+
+What is the significance of the "New Lookup Port" in dynamic lookup?
+Answer:
+When configured for dynamic cache, Informatica adds this port to indicate whether the server inserts or updates a row in the cache (1 or 2) or makes no change (0).
+
+I am having a table with columns:
+ID NAME
+1 x
+1 y
+1 z
+2 a
+2 b
+
+The requirement is to get output like:
+ID NAME Count(*)
+1 x 3
+1 y 3
+1 z 3
+2 a 2
+2 b 2
+
+Write a SQL query to get the id and how many times its count of repetition, you shouldn't get the distinct (i.e., id-3).
+Answer:
+`SELECT id, name, COUNT(*) FROM <table name> GROUP BY id, name;`
+
+Every DWH must have a time dimension. Now, what is the use of the time dimension? How can we calculate sales for one month, half-yearly, and yearly using the time dimension? How are we doing this using the time dimension?
+Answer:
+By using time dimension in an Expression transformation:
+- Create new ports for different time periods using GETDATE_PART functions.
+
+There is a table with an EMP salary column. How to get the fields that belong to the salary greater than the average salary of a particular department? Write a query.
+Answer:
+`SELECT * FROM EMP e WHERE sal > (SELECT AVG(sal) FROM emp m WHERE e.deptno = m.deptno GROUP BY deptno) ORDER BY deptno;`
+
+How we can get unique records into one target table and duplicate records into another target table?
+Answer:
+Data flow:
+- SQ -> Aggregator -> Router -> Targets
+- In Aggregator, create ports for unique and duplicate counts:
+  - Unique_port -> COUNT(*) = 1
+  - Duplicate_port -> COUNT(*) > 1
+- In Router, create groups based on these conditions.
+
+Can we load the data without a primary key of a table? What is target plan?
+Answer:
+We can load data without a primary key, but for updates from Informatica, you'd need to use an update override in the session.
+
+Alternative to update strategy transformation?
+Answer:
+Use target update override.
+
+Out of 1000 records, after loading 200 records, the session got failed. How do you load the rest of the records?
+Answer:
+Consider performance recovery.
+
+Use of lookup override?
+Answer:
+Lookup override allows changing the default SQL query generated by the lookup at runtime, including altering the ORDER BY or adding conditions.
+
+How do you merge multiple Flat files, for example, 100 flat files without using Union T/F?
+Answer:
+Create a new flat file with paths of all files. Import this file definition in Informatica as indirect loading.
+
+If we set DD_INSERT in mapping and Delete in session properties, what will happen?
+Answer:
+The session properties override mapping properties; thus, it will perform a delete operation.
+
+What is the difference between grep and find?
+Answer:
+- `grep` searches for patterns within files:
+  - Syntax: `grep <String> <filename>`
+- `find` locates files or directories:
+  - Syntax: `find <filename>`
+
+How can we perform incremental aggregation? Explain with an example?
+Answer:
+Perform Incremental Aggregation in session properties to only process new or updated records. For example, if 100 records were loaded yesterday and now you have 50 more (25 updates, 25 inserts), incremental aggregation processes only these 50 records, reducing time and increasing performance.
+
+What is a time dimension? Give an example?
+Answer:
+Time Dimension is used to generate dates based on requirements, often for fact table loading based on time/date:
+- Example: Daily, weekly, financial year, calendar year, business year.
+
+F10 and F5 are used in the debugging process.
+Answer:
+- **F10** moves to the next transformation, showing intermediate data.
+- **F5** processes all data at once, showing results at targets but not intermediate transformation values.
+
+What is data quality? How can a data quality solution be implemented into my Informatica transformations, even internationally?
+Answer:
+Data Quality involves verifying data for efficiency and accuracy. In Informatica, transformations can include:
+- Data validation for null, garbage, or incorrect data types.
+- Use of Informatica Data Quality tools for international data standardization and cleansing.
+
+What is the architecture of any Data warehousing project?
+Answer:
+- Project planning -> Requirements gathering -> Product selection and installation -> Dimensional modeling -> Physical modeling -> Deployment -> Maintenance.
+- Steps include source to staging, staging to dimension, dimension to fact.
+
+What is the function of F10 in Informatica?
+Answer:
+F10 moves the debugging process to the next transformation, allowing you to see data as it flows through.
+
+What is a causal dimension?
+Answer:
+A causal dimension explains why a fact table record exists, often reflecting a customer's decision or action, like why a purchase was made at a particular time.
+
+How many repositories can we create in Informatica?
+Answer:
+- In PowerMart, you can create any number of repositories, but metadata isn't shared.
+- In PowerCenter, you can create multiple repositories but designate one as global for metadata sharing.
+
+How can we run a workflow with pmcmd?
+Answer:
+First connect to pmcmd, then use:
+`pmcmd> connect -sv <service_name> -d <domain_name> -u <user_name> -p <password>`
+`pmcmd> startworkflow -f <folder_name> <workflow_name>`
+
+What is the exact difference between IN and EXISTS in Oracle?
+Answer:
+- **IN**: The subquery runs once, and the outer query compares each row to the result set.
+- **EXISTS**: For each row in the outer query, the subquery runs to check for existence, which can be more efficient with large result sets from the subquery.
+
+Here's the EXPLAIN PLAN for the IN query:
+OBJECT OPERATION
+------ --------------
+SELECT STATEMENT()
+NESTED LOOPS()
+EMP TABLE ACCESS(FULL)
+EMP TABLE ACCESS(BY INDEX ROWID)
+PK_EMP INDEX(UNIQUE SCAN)
+
+This query is virtually equivalent to:
+`SELECT e1.ename FROM EMP e1, (SELECT empno FROM EMP WHERE ename = 'KING') e2 WHERE e1.mgr = e2.empno;`
+
+In what type of scenario do we use bulk loading and normal loading?
+Answer:
+- **Bulk Loading:** Used for loading large volumes of data quickly, typically when no session recovery or primary keys are needed.
+- **Normal Loading:** Used when you need to maintain indexes, constraints, or when session recovery might be necessary.
+
+How to join two flat files if they have different structures? How to join one relational and one flat file?
+Answer:
+- For different structured flat files:
+  - Use expressions to create common dummy fields, then join on these in a Joiner transformation.
+- For one relational and one flat file:
+  - Convert the flat file to a relational source in Informatica, then join as usual.
+
+How to join two flat files in Informatica?
+Answer:
+If structures are the same, use indirect loading. If different, use expressions to match structures or create common fields for joining.
+
+How to identify or filter out a 0 byte file available in a folder by using a UNIX command?
+Answer:
+`find ~ -empty` lists all empty files in your home directory.
+`find . -maxdepth 1 -empty` lists empty files only in the current directory.
+`find . -maxdepth 1 -empty -not -name ".*"` lists only non-hidden empty files in the current directory.
+
+Can we use unconnected lookup as a dynamic lookup?
+Answer:
+No, unconnected lookups return only one port, while dynamic lookups need to return multiple ports for updates and inserts during session runtime.
+
+How can you avoid duplicate rows in a flat file?
+Answer:
+Use transformations like Sorter, Aggregator, or Dynamic Lookup to remove duplicates.
+
+Normalizer transformation is not involved in Mapplet. Why?
+Answer:
+Normalizer is a dynamic transformation, dependent on input, which makes it not suitable for reuse in different mappings with fixed logic.
+
+I want to use only one lookup. How?
+Answer:
+Create the lookup transformation in the transformation developer to make it reusable across mappings.
+
+How can one eliminate duplicate data without using the DISTINCT option?
+Answer:
+Using GROUP BY removes duplicate records.
+
+In a table, my source has 10 records, but how can I load 20 records in the target; I am not bothered about duplicates?
+Answer:
+Connect the source to two instances of the target in the mapping.
+
+In Lookup transformation, SQL override should be done, and the cache should be disabled. How do you do this procedure?
+Answer:
+Disabling cache prevents SQL override; they are mutually exclusive.
+
+What is the meaning of repository upgradation?
+Answer:
+Upgrading a repository means moving from a lower version to a higher version of Informatica, which involves license and product code updates in Repository Manager.
+
+I have a flat file source. I want to load the maximum salary of each deptno into the target. What is the mapping flow?
+Answer:
+- Source -> Aggregator (Group by deptno, MAX(salary)) -> Target
+
+How to run the batch using the pmcmd command?
+Answer:
+Use a Command task in the workflow to run pmcmd commands.
+
+What is Test Load?
+Answer:
+Test Load allows Informatica to read, transform data, and simulate writing to targets without actually loading the data, including all session functions but rolling back at completion.
+
+How are DTM buffer size and buffer block size related?
+Answer:
+Number of buffer blocks = DTM Buffer Size / Buffer Block Size. Default settings support 83 sources/targets; adjust for more.
+
+What are the transformations that are not involved in Mapplet?
+Answer:
+- Normalizer transformations
+- COBOL sources
+- XML Source Qualifier transformations
+- XML sources
+- Target definitions
+- Other Mapplets
+- Pre- and post-session stored procedures
+
+Define Informatica repository?
+Answer:
+Informatica repository is a central metadata storage place for all necessary information to build a data warehouse or data mart, including source/target definitions, business rules, mappings, workflows, etc.
+
+How much memory (size) is occupied by a session at runtime?
+Answer:
+Session size depends on caches used for transformations within the mapping and the volume of data passing through.
+
+What are the different options used to configure sequential batches?
+Answer:
+- Run the session only if the previous session completes successfully.
+- Always run the session.
+
+From where do you extract the data, how did you do it into Informatica?
+Answer:
+Sources can be relational tables or flat files on Unix servers. In Informatica, you define the structure and path in session properties.
+
+What are your sources in the project, and how do you import them into Informatica? How can I explain this?
+Answer:
+Sources depend on the project but often include flat files sent by clients. Import them in Informatica using the Source Analyzer's "Import from file" option.
+
+What is data modeling? What are types of modeling? In which situation will you use each one?
+Answer:
+Data modeling involves designing data marts or warehouses:
+- **Conceptual:** Understand client requirements, identify attributes and entities.
+- **Logical:** Define dimensions, facts, and relationships, often using modeling tools like ERwin.
+- **Physical:** Convert logical design into physical database structures.
+
+When will we use unconnected & connected lookup? How will it affect the performance of mapping?
+Answer:
+- **Connected Lookup:** For lookups on fewer values, better for performance when the lookup is on one table.
+- **Unconnected Lookup:** For lookups across multiple tables or when dealing with many date columns, potentially slower due to repeated calls.
+
+What is the difference between warehouse key and surrogate key?
+Answer:
+- **Surrogate Key:** System-generated, identifies unique entities, not records, used for historical tracking or when natural keys change.
+- **Primary Key:** Identifies unique records; often natural keys from business processes.
+
+Surrogate key example:
+If an employee moves from BU1 to BU2, a new surrogate key ensures historical data integrity for BU1 while new data reflects BU2.
+
+After we make a folder shared, can it be reversed? Why?
+Answer:
+No, because users might have created shortcuts to objects in these folders, un-sharing would render these shortcuts invalid.
+
+What is the filename which you need to configure in UNIX while installing Informatica?
+Answer:
+`pmserver.cfg`
+
+How do you know when to use a static cache and dynamic cache in lookup transformation?
+Answer:
+- **Dynamic Cache:** When applying lookup on target tables where data might be inserted or updated during the load.
+- **Static Cache:** When no updates or inserts are expected, offering better performance as it doesn't need to check or update cache during runtime.
+
+Whether Sequence Generator T/r uses Caches? Then what type of Cache is it?
+Answer:
+Sequence Generator uses cache when reusable, caching a number of values to support multiple sessions. The type of cache isn't explicitly defined but serves to maintain sequence across sessions.
+
+Explain grouped cross tab?
+Answer:
+Grouped cross tab is similar to a cross tab report but grouped by a specific attribute. For example, with emp and dept tables:
+- Select row as empno, column as ename, group item as deptno, and cell as sal.
+
+Result might look like:
+10 ------------------
+raju|ramu|krishna|...
+7098| 500
+7034| 7023|600
+-------------
+20
+
+Explain about HLD and LLD?
+Answer:
+- **HLD (High Level Design):** Focuses on meeting client requirements functionally. It includes diagrammatic representations of operational systems, staging areas, data warehouse, data marts, data extraction, and loading frequency.
+- **LLD (Low Level Design):** Detailed for each mapping, includes source definitions, target definitions, transformations used, column names, data types, business logic, session names, and mapping names.
+
+Transformer is a __________ stage?
+Answer:
+Dynamic. It's more than an active stage because it initiates at runtime with session, caches data, performs transformations, and ends with session.
+
+How can you connect a client to your Informatica server if the server is located at a different place (not local to the client)?
+Answer:
+You need to connect remotely to your server by adding and connecting to the repository with the provided username and password credentials.
